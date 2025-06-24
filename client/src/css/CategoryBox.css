@@ -1,0 +1,32 @@
+.category-box {
+  width: 120px;
+  height: 120px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background-color: #fafafa;
+  border: 1px solid #f3f3f3;
+  box-shadow: 0 8px 15px #00000036;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.category-box:hover {
+  box-shadow: 0 15px 15px #00000036;
+  transform: translateY(-7px);
+}
+
+.hoverd-category-box {
+  background-color: #5c5c5c;
+  border: 1px solid #717171;
+}
+
+.hoverd-category-box > .category-name {
+  color: #fff;
+}
+
+.category-name {
+  color: #000;
+  font-weight: bold;
+}

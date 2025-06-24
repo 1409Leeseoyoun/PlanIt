@@ -1,0 +1,23 @@
+.add-dday-form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  width: 85%;
+}
+
+.title-input,
+.category-select-option,
+.date-input,
+.add-submit-button {
+  height: 50px;
+  border-radius: 10px;
+  outline: none;
+  padding: 0 20px;
+  font-size: 15px;
+  border: none;
+}
+
+.add-submit-button > p {
+  margin: 0;
+  font-weight: bold;
+}
