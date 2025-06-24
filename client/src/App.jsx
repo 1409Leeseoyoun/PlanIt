@@ -20,12 +20,18 @@ function App() {
   const calcDiff = ({ due_date, category }) => {
     const today = new Date();
     const due = new Date(due_date);
+    const msPerDay = 1000 * 60 * 60 * 24;
+
     if (category === "생일") {
       let next = new Date(today.getFullYear(), due.getMonth(), due.getDate());
       if (next < today) next.setFullYear(today.getFullYear() + 1);
-      return Math.ceil((next - today) / (1000 * 60 * 60 * 24));
+      const raw = Math.floor((next - today) / msPerDay);
+      return raw + 1;
+    } else {
+      const diffMs = due - today;
+      const raw = Math.floor(diffMs / msPerDay);
+      return raw + 1;
     }
-    return Math.floor((due - today) / (1000 * 60 * 60 * 24));
   };
 
   useEffect(() => {
@@ -62,7 +68,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="app-name">PlanIt</h1>
+      <h1 className="app-name dm-serif-display-regular">PlanIt</h1>
 
       <div className="category-select-content">
         {["전체", "생일", "과제", "수능", "기념일"].map((name) => (

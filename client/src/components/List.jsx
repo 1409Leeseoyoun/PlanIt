@@ -1,4 +1,3 @@
-// client/src/components/List.jsx
 import { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import "../css/List.css";
@@ -23,7 +22,11 @@ export default function List({
   return (
     <div className="dday-list">
       {filtered.map((item) => {
-        const label = item.diff >= 0 ? `D-${item.diff}` : `D+${-item.diff + 1}`;
+        let label;
+        if (item.diff === 0) label = "D - Day";
+        else if (item.diff > 0) label = `D - ${item.diff}`;
+        else label = `D + ${-item.diff}`;
+
         const isOpen = openId === item.id;
 
         return (
