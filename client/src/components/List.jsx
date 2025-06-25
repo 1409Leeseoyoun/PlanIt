@@ -23,7 +23,7 @@ export default function List({
     <div className="dday-list">
       {filtered.map((item) => {
         let label;
-        if (item.diff === 0) label = "D - Day";
+        if (item.diff === 0) label = "D - DAY";
         else if (item.diff > 0) label = `D - ${item.diff}`;
         else label = `D + ${-item.diff}`;
 
