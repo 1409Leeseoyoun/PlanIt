@@ -16,16 +16,25 @@
   padding: 10px 10px;
   position: relative;
   width: 140px;
-  text-align: center;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu-item p {
   color: #000;
   margin: 0;
+  transition: all 0.3s ease;
 }
 
-.active > p {
+.menu-item p:hover {
+  font-size: 17px;
+}
+
+.active p {
   font-weight: bold;
+  font-size: 17px;
 }
 
 .tab-bar {
