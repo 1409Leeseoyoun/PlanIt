@@ -4,7 +4,7 @@ import CategoryBox from "./components/CategoryBox";
 import CategoryMenu from "./components/CategoryMenu";
 import AddDDay from "./components/AddDDay";
 import List from "./components/List";
-import "./App.css";
+import "./css/App.css";
 
 const ALL = 0,
   REMAIN = 1,
@@ -35,8 +35,9 @@ function App() {
   };
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
     axios
-      .get("/api/todos")
+      .get(`/api/todos/${userId}`)
       .then((res) =>
         setTodos(res.data.map((item) => ({ ...item, diff: calcDiff(item) })))
       );
@@ -62,14 +63,14 @@ function App() {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`/api/todos/${id}`);
+    const userId = localStorage.getItem("userId");
+    await axios.delete(`/api/todos/${userId}/${id}`);
     setTodos((prev) => prev.filter((t) => t.id !== id));
   };
 
   return (
     <div className="container">
       <h1 className="app-name dm-serif-display-regular">PlanIt</h1>
-
       <div className="category-select-content">
         {["전체", "생일", "과제", "수능", "기념일"].map((name) => (
           <CategoryBox
@@ -80,13 +81,11 @@ function App() {
           />
         ))}
       </div>
-
       <CategoryMenu
         currentCategory={currentCategory}
         activeIndex={activeTab}
         onChange={setActiveTab}
       />
-
       {activeTab === ADD ? (
         <AddDDay
           currentCategory={currentCategory}

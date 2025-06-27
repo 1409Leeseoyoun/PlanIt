@@ -3,7 +3,6 @@ body {
   height: auto;
   display: flex;
   align-items: start;
-  justify-content: center;
   background-color: #fff;
 }
 
@@ -29,6 +28,13 @@ p {
   justify-content: center;
   padding: 40px 20px 60px;
   row-gap: 40px;
+  position: relative;
+}
+
+.logout {
+  position: absolute;
+  top: -20;
+  right: -20;
 }
 
 .category-select-content {

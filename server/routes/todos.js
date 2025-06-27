@@ -1,57 +1,69 @@
-const express = require("express"); // Express 불러오기
-const router = express.Router(); // 라우터 객체 생성
-const db = require("../db"); // DB 연결 가져오기
+const express = require("express");
+const router = express.Router();
+const db = require("../db");
 
-router.get("/", (req, res) => {
-  db.all("SELECT * FROM todos ORDER BY id DESC", [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-
-// 할 일 추가
-router.post("/", (req, res) => {
-  const { title, category, due_date } = req.body; // 요청 데이터
-
-  db.run(
-    "INSERT INTO todos (title, category, due_date) VALUES (?, ?, ?)",
-    [title, category, due_date], // 값 바인딩
-    function (err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.status(201).json({ id: this.lastID }); // 성공 시 새 ID 반환
+router.get("/:user_id", (req, res) => {
+  const userId = req.params.user_id;
+  db.all(
+    "SELECT * FROM todos WHERE user_id = ? ORDER BY id DESC",
+    [userId],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
     }
   );
 });
 
-// 특정 할 일 삭제
-router.delete("/:id", (req, res) => {
-  const id = req.params.id; // URL에서 id 추출
+router.post("/", (req, res) => {
+  const { user_id, title, category, due_date } = req.body;
 
-  db.run("DELETE FROM todos WHERE id = ?", [id], function (err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ deletedId: id }); // 성공 시 삭제된 ID 반환
-  });
+  db.get(
+    "SELECT MAX(id) as maxId FROM todos WHERE user_id = ?",
+    [user_id],
+    (err, row) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      const newId = (row?.maxId || 0) + 1;
+
+      db.run(
+        "INSERT INTO todos (user_id, id, title, category, due_date) VALUES (?, ?, ?, ?, ?)",
+        [user_id, newId, title, category, due_date],
+        function (err) {
+          if (err) return res.status(500).json({ error: err.message });
+          res.status(201).json({ user_id, id: newId });
+        }
+      );
+    }
+  );
 });
 
-// 특정 할 일 수정
-router.put("/:id", (req, res) => {
-  const id = req.params.id; // URL 파라미터에서 id 가져오기
-  const { title, category, due_date } = req.body; // 요청 바디에서 수정할 값 가져오기
+router.put("/:user_id/:id", (req, res) => {
+  const { user_id, id } = req.params;
+  const { title, category, due_date } = req.body;
 
   db.run(
     `UPDATE todos
-       SET title    = ?,
-           category = ?,
-           due_date = ?
-     WHERE id = ?`,
-    [title, category, due_date, id], // 순서대로 바인딩
+     SET title = ?, category = ?, due_date = ?
+     WHERE user_id = ? AND id = ?`,
+    [title, category, due_date, user_id, id],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
-      res.json({ updatedId: id }); // 성공 시 수정된 ID 반환
+      res.json({ updatedId: id });
     }
   );
 });
 
-module.exports = router; // 라우터 내보내기
+router.delete("/:user_id/:id", (req, res) => {
+  const { user_id, id } = req.params;
+
+  db.run(
+    "DELETE FROM todos WHERE user_id = ? AND id = ?",
+    [user_id, id],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ deletedId: id });
+    }
+  );
+});
+
+module.exports = router;

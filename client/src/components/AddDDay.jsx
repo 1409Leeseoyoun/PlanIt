@@ -32,14 +32,14 @@ function AddDDay({ currentCategory, onSave, editItem }) {
     }
     try {
       if (editItem) {
-        await axios.put(`/api/todos/${editItem.id}`, {
-          title,
-          category,
-          due_date: dueDate,
-        });
+        await axios.put(
+          `/api/todos/${localStorage.getItem("userId")}/${editItem.id}`,
+          { title, category, due_date: dueDate }
+        );
         onSave({ id: editItem.id, title, category, due_date: dueDate });
       } else {
         const res = await axios.post("/api/todos", {
+          user_id: localStorage.getItem("userId"),
           title,
           category,
           due_date: dueDate,
