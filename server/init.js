@@ -1,12 +1,12 @@
 const db = require("./db");
 
 db.serialize(() => {
-  db.run("DROP TABLE IF EXISTS users", (err) => {
-    if (err) return console.error("기존 테이블 삭제 오류:", err.message);
-  });
-  db.run("DROP TABLE IF EXISTS todos", (err) => {
-    if (err) return console.error("기존 테이블 삭제 오류:", err.message);
-  });
+  // db.run("DROP TABLE IF EXISTS users", (err) => {
+  //   if (err) return console.error("기존 테이블 삭제 오류:", err.message);
+  // });
+  // db.run("DROP TABLE IF EXISTS todos", (err) => {
+  //   if (err) return console.error("기존 테이블 삭제 오류:", err.message);
+  // });
 
   db.run(
     `CREATE TABLE IF NOT EXISTS users (

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import "../css/CategoryMenu.css";
+import "../css/CategoryMenu.scss";
 
 const TAB_LABELS = (currentCategory) => [
   currentCategory === "전체" ? "나의 PlanIt" : "모두보기",

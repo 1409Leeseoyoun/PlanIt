@@ -16,23 +16,14 @@ router.get("/:user_id", (req, res) => {
 
 router.post("/", (req, res) => {
   const { user_id, title, category, due_date } = req.body;
+  console.log(req.body);
 
-  db.get(
-    "SELECT MAX(id) as maxId FROM todos WHERE user_id = ?",
-    [user_id],
-    (err, row) => {
+  db.run(
+    "INSERT INTO todos (user_id, title, category, due_date) VALUES (?, ?, ?, ?)",
+    [user_id, title, category, due_date],
+    function (err) {
       if (err) return res.status(500).json({ error: err.message });
-
-      const newId = (row?.maxId || 0) + 1;
-
-      db.run(
-        "INSERT INTO todos (user_id, id, title, category, due_date) VALUES (?, ?, ?, ?, ?)",
-        [user_id, newId, title, category, due_date],
-        function (err) {
-          if (err) return res.status(500).json({ error: err.message });
-          res.status(201).json({ user_id, id: newId });
-        }
-      );
+      res.status(201).json({ user_id, id: this.lastID }); // 새로 생성된 id 반환
     }
   );
 });

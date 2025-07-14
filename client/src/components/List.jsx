@@ -44,7 +44,7 @@ export default function List({
               size={20}
               className="three-dots"
               onClick={() => setOpenId(isOpen ? null : item.id)}
-              style={{ position: "absolute", right: 10, cursor: "pointer" }}
+              style={{ position: "absolute", right: 15, cursor: "pointer" }}
             />
             {isOpen && (
               <div
